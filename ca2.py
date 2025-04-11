@@ -55,31 +55,68 @@ sales_data.drop_duplicates(inplace=True)
 # plt.ylabel("Total Sales")
 # plt.show()
 #2. Compare sales and gross profit across regions and divisions
-# plt.figure(figsize=(10,6))
-# region=sales_data.groupby(["Country/Region","Division"])[["Sales","Gross Profit"]].sum().reset_index()
-# melted_data=region.melt(id_vars=["Country/Region","Division"],value_vars=["Sales","Gross Profit"],var_name="Metric",value_name="Amount")
-# sns.barplot(data=melted_data,x="Country/Region",y="Amount",hue="Division",errorbar=None)
-# print(melted_data.head(10))
-# plt.title("Sales and Gross Profit by Regions and Divisions")
-# plt.xlabel("Region")
+# region = sales_data.groupby(["Country/Region", "Division"])[["Sales", "Gross Profit"]].sum().reset_index()
+# print(region)
+# region["Region-Division"] = region["Country/Region"] + " - " + region["Division"]
+# melted_data = region.melt(
+#     id_vars=["Region-Division"],
+#     value_vars=["Sales", "Gross Profit"],
+#     var_name="Metric",
+#     value_name="Amount"
+# )
+# plt.figure(figsize=(14, 6))
+# ax = sns.barplot(data=melted_data, x="Region-Division", y="Amount", hue="Metric", palette="Set2", errorbar=None)
+# for p in ax.patches:
+#     height = p.get_height()
+#     ax.annotate(f'{int(height)}',
+#                 (p.get_x() + p.get_width() / 2., height),
+#                 ha='center', va='bottom', fontsize=9, color='black')
+# plt.title("Sales and Gross Profit by Division for Each Region")
+# plt.xlabel("Region - Division")
 # plt.ylabel("Total Amount")
-# plt.legend(title="Metric")
-# plt.grid(axis="y",linestyle="--")
+# plt.xticks(rotation=45, ha="right")
+# plt.grid(axis="y", linestyle="--")
+# plt.tight_layout()
 # plt.show()
 #3. Analyze the distribution of sales and costs
-# plt.figure(figsize=(8,5))
-# sns.histplot(sales_data["Sales"],bins=30,color="b",label="Sales")
-# sns.histplot(sales_data["Cost"],bins=30,color="r",label="Cost")
-# plt.title("Distribution of Sales and Costs")
-# plt.xlabel("Metric")
-# plt.ylabel("Amount")
-# plt.legend()
-# plt.show()
-#4. identify correlations between sales, cost, and profit
-# data=sales_data[["Sales","Cost","Gross Profit"]]
-# plt.figure(figsize=(10,6))
-# sns.heatmap(data.corr(),annot=True,fmt=".2f",linewidths=0.5,cmap="coolwarm")
-# plt.title("Correlation Heatmap")
+# sns.set(style="whitegrid")
+# plt.figure(figsize=(14, 6))
+# #Sales Histogram
+# plt.subplot(1, 2, 1)
+# sales_plot = sns.histplot(sales_data['Sales'], bins=10, color='skyblue', kde=True)
+# plt.title('Distribution of Sales')
+# plt.xlabel('Sales')
+# plt.ylabel('Frequency')
+# for bar in sales_plot.patches:
+#     height = bar.get_height()
+#     if height > 0:
+#         sales_plot.text(
+#             bar.get_x() + bar.get_width() / 2,
+#             height,
+#             f'{int(height)}',
+#             ha='center',
+#             va='bottom',
+#             fontsize=9,
+#             fontweight='bold'
+#         )
+# plt.subplot(1, 2, 2)
+# cost_plot = sns.histplot(sales_data['Cost'], bins=10, color='salmon', kde=True)
+# plt.title('Distribution of Costs')
+# plt.xlabel('Cost')
+# plt.ylabel('Frequency')
+# for bar in cost_plot.patches:
+#     height = bar.get_height()
+#     if height > 0:
+#         cost_plot.text(
+#             bar.get_x() + bar.get_width() / 2,
+#             height,
+#             f'{int(height)}',
+#             ha='center',
+#             va='bottom',
+#             fontsize=9,
+#             fontweight='bold'
+#         )
+# plt.tight_layout()
 # plt.show()
 
 #obj4
