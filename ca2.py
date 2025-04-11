@@ -143,7 +143,12 @@ sales_data.drop_duplicates(inplace=True)
 # plt.title("Box Plot of Gross Profit")
 # plt.tight_layout()
 # plt.show()
-
+#4. identify correlations between sales, cost, and profit
+# data=sales_data[["Sales","Cost","Gross Profit"]]
+# plt.figure(figsize=(10,6))
+# sns.heatmap(data.corr(),annot=True,fmt=".2f",linewidths=0.5,cmap="coolwarm")
+# plt.title("Correlation Heatmap")
+# plt.show()
 #obj5
 # To determine whether the monthly sales of a top selling product follow a normal distribution using descriptive statistics and the Shapiro-Wilk test
 # top_product = sales_data['Product Name'].value_counts().idxmax()
