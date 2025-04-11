@@ -1,7 +1,9 @@
 #Data Preprocessing & Cleaning
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+from scipy.stats import shapiro,probplot
 # #load dataset
 sales_data=pd.read_csv("C:\\Users\\ishit\\python\\numpy_pandas\\ca2\\Candy_Sales.csv")
 #  #1. Convert date columns to datetime
@@ -27,10 +29,6 @@ sales_data.drop_duplicates(inplace=True)
 # print(sales_data[["Sales","Units","Gross Profit","Cost"]].cov())
 # # obj1
 #1. calculate the total revenue, average revenue per order, and standard deviation of sales from the Candy_Sales dataset.
-# import numpy as np
-# import pandas as pd
-# #load dataset
-# sales_data=pd.read_csv("C:\\Users\\ishit\\python\\numpy_pandas\\ca2\\Candy_Sales.csv")
 # sales=np.array(sales_data["Sales"])
 # total_revenue=np.sum(sales)
 # average_revenue=np.mean(sales)
@@ -41,8 +39,6 @@ sales_data.drop_duplicates(inplace=True)
 
 # obj2
 #find the total number of orders, total units sold, and the state with the highest sales
-# import pandas as pd
-# sales_data=pd.read_csv("C:\\Users\\ishit\\python\\numpy_pandas\\ca2\\Candy_Sales.csv")
 # total_orders=sales_data.shape[0]
 # total_units=sales_data["Units"].sum()
 # state_highest_sale=sales_data.groupby("State/Province")["Sales"].sum().idxmax()
@@ -109,4 +105,34 @@ sales_data.drop_duplicates(inplace=True)
 # sns.boxplot(sales_data["Gross Profit"],color="lightcoral")
 # plt.title("Box Plot of Gross Profit")
 # plt.tight_layout()
+# plt.show()
+
+#obj5
+# To determine whether the monthly sales of a top selling product follow a normal distribution using descriptive statistics and the Shapiro-Wilk test
+# top_product = sales_data['Product Name'].value_counts().idxmax()
+# sales_data['Month'] = sales_data['Order Date'].dt.to_period('M')
+# product_df = sales_data[sales_data['Product Name'] == top_product].copy()
+# monthly_sales = sales_data.groupby('Month')['Sales'].sum()
+# shapiro_stat, shapiro_p = shapiro(monthly_sales)
+# desc_stats = monthly_sales.describe()
+# print("Descriptive Statistics:\n", desc_stats)
+# print(f"\nShapiro-Wilk Test:\nW = {shapiro_stat:.4f}, p-value = {shapiro_p:.4f}")
+# if shapiro_p < 0.05:
+#     print("Conclusion: Sales do NOT follow a normal distribution.")
+# else:
+#     print("Conclusion: Sales MAY follow a normal distribution.")
+# # Plot histogram
+# plt.figure(figsize=(10, 5))
+# sns.histplot(monthly_sales, kde=True, bins=10, color='skyblue')
+# plt.title(f'Monthly Sales Distribution: {top_product}')
+# plt.xlabel('Sales')
+# plt.ylabel('Frequency')
+# plt.grid(True)
+# plt.show()
+
+# # Q-Q plot
+# plt.figure(figsize=(6, 6))
+# probplot(monthly_sales, dist="norm", plot=plt)
+# plt.title("Q-Q Plot of Monthly Sales")
+# plt.grid(True)
 # plt.show()
